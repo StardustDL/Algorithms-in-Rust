@@ -5,7 +5,7 @@ pub struct SubsetGenerator {
 }
 
 impl SubsetGenerator {
-    /// Created from the fullset and the current subset
+    /// Create from the fullset and the current subset.
     ///
     /// # Examples
     ///
