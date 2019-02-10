@@ -1,0 +1,20 @@
+[package]
+name = "rsalgo"
+version = "0.0.1-init"
+authors = ["StardustDL <stardustdl@163.com>"]
+edition = "2018"
+description = "A collection of some algorithms and data-structures."
+license = "Apache-2.0"
+repository = "https://github.com/StardustDL/Algorithms-in-Rust"
+readme = "README.md"
+keywords = ["algorithm", "data-structures"]
+categories = ["algorithms", "data-structures"]
+
+[badges]
+travis-ci = { repository = "StardustDL/Algorithms-in-Rust", branch = "master" }
+codecov = { repository = "StardustDL/Algorithms-in-Rust", branch = "master", service = "github" }
+is-it-maintained-issue-resolution = { repository = "StardustDL/Algorithms-in-Rust" }
+is-it-maintained-open-issues = { repository = "StardustDL/Algorithms-in-Rust" }
+maintenance = { status = "experimental" }
+
+[dependencies]
