@@ -1,6 +1,6 @@
 [package]
 name = "rsalgo"
-version = "0.0.1-init"
+version = "0.0.1-init.1"
 authors = ["StardustDL <stardustdl@163.com>"]
 edition = "2018"
 description = "A collection of some algorithms and data-structures."
@@ -18,3 +18,4 @@ is-it-maintained-open-issues = { repository = "StardustDL/Algorithms-in-Rust" }
 maintenance = { status = "experimental" }
 
 [dependencies]
+rand = "0.6.5"

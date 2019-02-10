@@ -13,12 +13,12 @@
 
 ## Algorithms
 
-  - [ ] Discretization
+  - [x] Discretization
   - [x] Dichotomy
     - [x] Lower bound
     - [x] Upper bound
     - [x] Equal range
-  - [ ] Inversion pairs
+  - [x] Inversion pairs
   - [x] Next subset
   - [ ] Quick pow, quick multiply
   - [ ] Matrix

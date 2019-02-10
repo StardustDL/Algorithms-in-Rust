@@ -5,3 +5,6 @@ pub use subset_generator::SubsetGenerator;
 
 mod search;
 pub use search::*;
+
+mod inversion;
+pub use inversion::*;

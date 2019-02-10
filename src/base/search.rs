@@ -27,7 +27,7 @@ pub fn dichotomy<TC: Fn(isize) -> bool>(
     ans
 }
 
-/// Get the position of the lower bound of value in the slice
+/// Get the position of the lower bound of value in the slice.
 ///
 /// # Examples
 ///
@@ -43,7 +43,7 @@ pub fn lower_bound<T: PartialOrd>(slice: &[T], value: &T) -> Option<usize> {
     }
 }
 
-/// Get the position of the upper bound of value in the slice
+/// Get the position of the upper bound of value in the slice.
 ///
 /// # Examples
 ///
@@ -59,7 +59,7 @@ pub fn upper_bound<T: PartialOrd>(slice: &[T], value: &T) -> Option<usize> {
     }
 }
 
-/// Get the position interval that those values equal to the value
+/// Get the position interval that those values equal to the value.
 ///
 /// # Examples
 ///
@@ -77,8 +77,30 @@ pub fn equal_range<T: PartialOrd>(slice: &[T], value: &T) -> Option<(usize, usiz
     }
 }
 
+/// Build a vector with the rank of each item in origin vector.
+///
+/// # Examples
+///
+/// ```
+/// let slice = [0, 1, 2, 1, 5];
+///
+/// assert_eq!([0, 1, 2, 1, 3], rsalgo::base::discretization(&slice).as_slice());
+/// ```
+pub fn discretization<T: PartialEq + Ord + Clone>(slice: &[T]) -> Vec<usize> {
+    let mut temp = slice.to_vec();
+    temp.sort();
+    temp.dedup();
+    let mut ans: Vec<usize> = Vec::new();
+    for item in slice {
+        ans.push(lower_bound(&temp, &item).unwrap());
+    }
+    ans
+}
+
 #[cfg(test)]
 mod tests {
+    use rand::Rng;
+
     #[test]
     fn dichotomy() {
         assert_eq!(Some(5), super::dichotomy(0, 10, |val| val >= 5));
@@ -105,5 +127,27 @@ mod tests {
     fn equal_range() {
         let slice = [0, 1, 2, 2, 2, 5, 6, 7, 8, 9];
         assert_eq!(Some((2, 5)), super::equal_range(&slice, &2));
+    }
+
+    #[test]
+    fn discretization() {
+        let slice = [0, 1, 2, 1, 5];
+        assert_eq!([0, 1, 2, 1, 3], super::discretization(&slice).as_slice());
+
+        const LEN: usize = 128;
+        let mut data = [0; LEN];
+        let mut rng = rand::thread_rng();
+        rng.fill(&mut data[..]);
+
+        let d_data = super::discretization(&data);
+        for &val in &d_data {
+            assert!(val < LEN);
+        }
+
+        for i in 0..LEN {
+            for j in 0..LEN {
+                assert!(data[i].cmp(&data[j]) == d_data[i].cmp(&d_data[j]));
+            }
+        }
     }
 }
