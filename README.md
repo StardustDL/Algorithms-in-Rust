@@ -1,5 +1,6 @@
 # Algorithms in Rust
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/52a1fc4480624f9182f02f7a53a2d56d)](https://app.codacy.com/app/StardustDL/Algorithms-in-Rust?utm_source=github.com&utm_medium=referral&utm_content=StardustDL/Algorithms-in-Rust&utm_campaign=Badge_Grade_Dashboard)
 [![](https://img.shields.io/travis/StardustDL/Algorithms-in-Rust.svg)](https://travis-ci.org/StardustDL/Algorithms-in-Rust)
 [![](https://img.shields.io/codecov/c/gh/StardustDL/Algorithms-in-Rust.svg)](https://codecov.io/gh/StardustDL/Algorithms-in-Rust)
 [![](https://img.shields.io/librariesio/github/StardustDL/Algorithms-in-Rust.svg)](https://libraries.io/cargo/rsalgo)
