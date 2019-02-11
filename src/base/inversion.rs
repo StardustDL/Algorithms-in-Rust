@@ -5,7 +5,8 @@ use super::search;
 /// # Examples
 ///
 /// ```
-/// assert_eq!(9, rsalgo::base::inversion_pairs_count(&[1, 3, 5, 3, 2, 4, 7, 9, 6, 6]));
+/// let slice = [1, 3, 5, 3, 2, 4, 7, 9, 6, 6];
+/// assert_eq!(9, rsalgo::base::inversion_pairs_count(&slice));
 /// ```
 pub fn inversion_pairs_count<T: PartialEq + Ord + Clone>(slice: &[T]) -> usize {
     let mut ans = 0;
@@ -53,9 +54,7 @@ fn merge_sort(a: &mut [usize], l: usize, r: usize, temp: &mut [usize], pair: &mu
         rr += 1;
     }
 
-    for i in l..r {
-        a[i] = temp[i - l];
-    }
+    a[l..r].clone_from_slice(&temp[0..(r - l)]);
 }
 
 #[cfg(test)]

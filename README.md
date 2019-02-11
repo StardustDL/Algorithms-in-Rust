@@ -11,6 +11,8 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/StardustDL/Algorithms-in-Rust.svg)](http://isitmaintained.com/project/StardustDL/Algorithms-in-Rust "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/StardustDL/Algorithms-in-Rust.svg)](http://isitmaintained.com/project/StardustDL/Algorithms-in-Rust "Percentage of issues still open")
 
+A collection of some algorithms and data-structures.
+
 ## Algorithms
 
   - [x] Discretization
@@ -20,10 +22,10 @@
     - [x] Equal range
   - [x] Inversion pairs
   - [x] Next subset
-  - [ ] Quick pow, quick multiply
+  - [x] Quick pow, quick multiply
   - [ ] Matrix
   - [ ] Prime test
-  - [ ] GCD, LCM
+  - [x] GCD, LCM
   - [ ] Inverse element (Modal meaning)
   - [ ] Linear sieve
   - [ ] Trichotomy
