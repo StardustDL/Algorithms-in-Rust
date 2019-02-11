@@ -15,7 +15,7 @@ impl DisjointSet {
     /// ```
     pub fn new(size: usize, enable_rank: bool) -> Self {
         DisjointSet {
-            size: size,
+            size,
             parent: (0..size).collect(),
             rank: if enable_rank {
                 Some(vec![0; size])
@@ -63,9 +63,9 @@ impl DisjointSet {
     /// ```
     /// let mut s = rsalgo::ds::DisjointSet::new(100, true);
     ///
-    /// assert_eq!(false, s.issame(0, 1));
+    /// assert_eq!(false, s.in_same(0, 1));
     /// ```
-    pub fn issame(&mut self, a: usize, b: usize) -> bool {
+    pub fn in_same(&mut self, a: usize, b: usize) -> bool {
         self.find(a) == self.find(b)
     }
 
@@ -76,7 +76,7 @@ impl DisjointSet {
     /// ```
     /// let mut s = rsalgo::ds::DisjointSet::new(100, true);
     /// s.unite(0, 1);
-    /// assert_eq!(true, s.issame(0, 1));
+    /// assert_eq!(true, s.in_same(0, 1));
     /// ```
     pub fn unite(&mut self, a: usize, b: usize) {
         let (mut a, mut b) = (self.find(a), self.find(b));
@@ -111,13 +111,13 @@ mod tests {
             let a = rng.gen_range(0, SIZE);
             let b = rng.gen_range(0, SIZE);
 
-            assert_eq!(sa.issame(a, b), sb.issame(a, b));
+            assert_eq!(sa.in_same(a, b), sb.in_same(a, b));
 
             sa.unite(a, b);
             sb.unite(a, b);
 
-            assert!(sa.issame(a, b));
-            assert!(sb.issame(a, b));
+            assert!(sa.in_same(a, b));
+            assert!(sb.in_same(a, b));
         }
     }
 }

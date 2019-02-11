@@ -33,8 +33,8 @@ A collection of some algorithms and data-structures.
 
 ## Data-structures
 
-  - [ ] Disjoint set
-  - [ ] Monotonic queue
+  - [x] Disjoint set
+  - [x] Monotonic queue
   - [ ] Sparse Table
   - [ ] Prefix sum
   - [ ] Fenwick tree
