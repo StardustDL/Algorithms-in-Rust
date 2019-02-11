@@ -14,7 +14,7 @@ impl SubsetGenerator {
     /// 
     /// assert_eq!(Some(0b010), gen.next());
     /// ```
-    pub fn new(subset: usize, fullset: usize) -> SubsetGenerator {
+    pub fn new(subset: usize, fullset: usize) -> Self {
         SubsetGenerator {
             set: subset,
             full: fullset,
