@@ -2,11 +2,11 @@ use std::collections::VecDeque;
 
 /// A queue with its elements in ascending order (unstrict)
 #[derive(Default)]
-pub struct MonotonicQueue<T: PartialOrd> {
-    inner: VecDeque<T>,
+pub struct MonotonicQueue<'a, T: PartialOrd> {
+    inner: VecDeque<&'a T>,
 }
 
-impl<T: PartialOrd> MonotonicQueue<T> {
+impl<'a, T: PartialOrd> MonotonicQueue<'a, T> {
     /// Creates an empty MonotonicQueue.
     ///
     /// # Examples
@@ -58,7 +58,7 @@ impl<T: PartialOrd> MonotonicQueue<T> {
     /// use rsalgo::ds::MonotonicQueue;
     ///
     /// let mut v: MonotonicQueue<u32> = MonotonicQueue::new();
-    /// v.enqueue(1);
+    /// v.enqueue(&1);
     /// v.clear();
     /// assert!(v.is_empty());
     /// ```
@@ -74,12 +74,12 @@ impl<T: PartialOrd> MonotonicQueue<T> {
     /// use rsalgo::ds::MonotonicQueue;;
     ///
     /// let mut buf = MonotonicQueue::new();
-    /// buf.enqueue(1);
-    /// buf.enqueue(3); // removed when enqueue `2`
-    /// buf.enqueue(2);
+    /// buf.enqueue(&1);
+    /// buf.enqueue(&3); // removed when enqueue `2`
+    /// buf.enqueue(&2);
     /// assert_eq!(2, buf.len());
     /// ```
-    pub fn enqueue(&mut self, value: T) {
+    pub fn enqueue(&mut self, value: &'a T) {
         while let Some(back) = self.inner.back() {
             if back <= &value {
                 break;
@@ -96,14 +96,14 @@ impl<T: PartialOrd> MonotonicQueue<T> {
     /// ```
     /// use rsalgo::ds::MonotonicQueue;
     /// let mut d = MonotonicQueue::new();
-    /// d.enqueue(1);
-    /// d.enqueue(2);
+    /// d.enqueue(&1);
+    /// d.enqueue(&2);
     ///
-    /// assert_eq!(d.dequeue(), Some(1));
-    /// assert_eq!(d.dequeue(), Some(2));
+    /// assert_eq!(d.dequeue(), Some(&1));
+    /// assert_eq!(d.dequeue(), Some(&2));
     /// assert_eq!(d.dequeue(), None);
     /// ```
-    pub fn dequeue(&mut self) -> Option<T> {
+    pub fn dequeue(&mut self) -> Option<&T> {
         self.inner.pop_front()
     }
 
@@ -114,12 +114,12 @@ impl<T: PartialOrd> MonotonicQueue<T> {
     /// ```
     /// use rsalgo::ds::MonotonicQueue;
     /// let mut d = MonotonicQueue::new();
-    /// d.enqueue(1);
-    /// d.enqueue(2);
+    /// d.enqueue(&1);
+    /// d.enqueue(&2);
     ///
-    /// assert_eq!(d.head(), Some(&1));
+    /// assert_eq!(d.head(), Some(&&1));
     /// ```
-    pub fn head(&self) -> Option<&T> {
+    pub fn head(&self) -> Option<&&T> {
         self.inner.front()
     }
 }
@@ -136,13 +136,13 @@ mod tests {
         let mut q: MonotonicQueue<u32> = MonotonicQueue::new();
         assert!(q.is_empty());
 
-        for &x in &a {
+        for x in &a {
             q.enqueue(x);
         }
 
         assert_eq!(q.len(), expect.len());
 
-        for &x in &expect {
+        for x in &expect {
             assert_eq!(&x, q.head().unwrap());
             assert_eq!(x, q.dequeue().unwrap());
         }

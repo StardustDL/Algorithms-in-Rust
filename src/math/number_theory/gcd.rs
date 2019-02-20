@@ -101,7 +101,6 @@ pub fn quick_multiply(a: Uint, b: Uint, modulo: Uint) -> Uint {
     ans
 }
 
-
 #[cfg(test)]
 mod tests {
     use rand::Rng;

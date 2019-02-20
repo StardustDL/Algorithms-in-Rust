@@ -13,13 +13,15 @@ where
     T: Copy + Add<Output = T> + Sub<Output = T>,
 {
     /// Creates a PrefixSum1D from `values`
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```
+    /// use rsalgo::ds::PrefixSum1D;
+    ///
     /// let source: Vec<usize> = (0..100).collect();
     /// let ps = PrefixSum1D::new(&source, 0);
-    /// 
+    ///
     /// assert_eq!(ps.sum(0..100), (0..100).sum());
     /// ```
     pub fn new(values: &[T], zero: T) -> Self {
@@ -32,13 +34,15 @@ where
     }
 
     /// Gets sum of the `range` in basic sequence.
-    /// 
+    ///
     /// # Examples
-    /// 
+    ///
     /// ```
+    /// use rsalgo::ds::PrefixSum1D;
+    ///
     /// let source: Vec<usize> = (0..100).collect();
     /// let ps = PrefixSum1D::new(&source, 0);
-    /// 
+    ///
     /// assert_eq!(ps.sum(1..1), (1..1).sum());
     /// assert_eq!(ps.sum(10..15), (10..15).sum());
     /// ```

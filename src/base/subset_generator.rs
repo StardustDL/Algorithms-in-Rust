@@ -11,7 +11,7 @@ impl SubsetGenerator {
     ///
     /// ```
     /// let mut gen = rsalgo::base::SubsetGenerator::new(0b100, 0b110);
-    /// 
+    ///
     /// assert_eq!(Some(0b010), gen.next());
     /// ```
     pub fn new(subset: usize, fullset: usize) -> Self {

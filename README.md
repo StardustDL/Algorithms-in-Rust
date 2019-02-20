@@ -45,7 +45,7 @@ A collection of some algorithms and data-structures.
 - [ ] Prefix sum
   - [x] 1D
   - [ ] 2D
-- [ ] Fenwick tree
+- [x] Fenwick tree
 - [ ] Segment tree
 - [ ] Leftist heap
 - [ ] Trie
