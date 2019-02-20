@@ -28,11 +28,11 @@ install:
   - cargo build --verbose
 
 before_script:
-  - # rustup component add clippy
+  - rustup component add clippy || rustup component add clippy --toolchain=nightly || cargo install --git https://github.com/rust-lang/rust-clippy/ --force clippy
 
 script:
   - cargo build --verbose; cargo test --verbose
-  - # cargo clippy
+  - cargo clippy
 
 after_success: |
   wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz &&
