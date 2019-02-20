@@ -28,7 +28,7 @@ where
         let mut inner = Vec::with_capacity(values.len() + 1);
         inner.push(zero);
         for value in values {
-            inner.push(inner[inner.len() - 1] + *value);
+            inner.push(*inner.last().unwrap() + *value);
         }
         PrefixSum1D { inner }
     }

@@ -19,7 +19,7 @@ pub fn is_prime_trial(value: Uint) -> bool {
 
     let sqrt = (value as f64).sqrt().floor() as Uint;
 
-    (2..sqrt + 1).all(|x| value % x != 0)
+    (2..=sqrt).all(|x| value % x != 0)
 }
 
 #[cfg(test)]

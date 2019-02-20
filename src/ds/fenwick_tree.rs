@@ -43,6 +43,20 @@ where
         self.inner.len()
     }
 
+    /// Returns if FenwickTree is empty.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use rsalgo::ds::FenwickTree;
+    ///
+    /// let v: FenwickTree<u32> = FenwickTree::new(0, 0);
+    /// assert!(v.is_empty());
+    /// ```
+    pub fn is_empty(&self) -> bool {
+        self.inner.is_empty()
+    }
+
     /// Add `delta` to the position `pos`
     ///
     /// # Examples
@@ -52,7 +66,7 @@ where
     ///
     /// let mut v: FenwickTree<u32> = FenwickTree::new(10, 0);
     /// v.add(0, 1);
-    /// assert_eq!(1, v.sum(1));
+    /// assert_eq!(1, v.prefix_sum(1));
     /// ```
     pub fn add(&mut self, pos: usize, delta: T) {
         let mut pos = pos + 1;
