@@ -54,7 +54,11 @@ pub trait Graph<'a> {
         Self::TEdge: PartialEq;
 }
 
-pub trait IdGraph<'a>: Graph<'a> {
+pub trait IdGraph<'a, V, E>: Graph<'a, TVertex = V, TEdge = E>
+where
+    V: IdVertex + 'a,
+    E: IdEdge + 'a,
+{
     fn out_edges_id(&'a self, vertex: usize) -> Box<GenericRefIter<'a, Self::TEdge>>;
 
     fn remove_vertex_id(&mut self, vertex: usize) -> Option<Self::TVertex>;
@@ -73,9 +77,9 @@ pub trait LengthEdge: Edge {
     fn length(&self) -> isize;
 }
 
-pub fn get_vertices<T: IdEdge>(edges: &[&T]) -> Vec<usize> {
+pub fn get_vertices<T: IdEdge>(edges: &[T]) -> Vec<usize> {
     let mut set = std::collections::HashSet::new();
-    edges.iter().for_each(|&x| {
+    edges.iter().for_each(|x| {
         set.insert(x.from());
         set.insert(x.to());
     });

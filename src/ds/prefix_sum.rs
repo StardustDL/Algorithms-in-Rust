@@ -47,7 +47,7 @@ where
     /// assert_eq!(ps.sum(10..15), (10..15).sum());
     /// ```
     pub fn sum(&self, range: Range<usize>) -> T {
-        // use .is_empty when it stable
+        // TODO use .is_empty when it stable
         self.inner[range.end] - self.inner[range.start]
     }
 }

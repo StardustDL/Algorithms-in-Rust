@@ -11,3 +11,6 @@ pub use prefix_sum::PrefixSum1D;
 
 mod fenwick_tree;
 pub use fenwick_tree::FenwickTree;
+
+mod sparse_table;
+pub use sparse_table::SparseTable;

@@ -1,25 +1,24 @@
-use super::{IdEdge, LengthEdge};
+use super::{IdEdge, IdGraph, IdVertex, LengthEdge};
 use crate::ds::DisjointSet;
 use std::collections::HashMap;
 
-pub fn minimum_spanning_tree<T: IdEdge + LengthEdge>(edges: &[&T]) -> Option<isize> {
-    if edges.is_empty() {
+pub fn minimum_spanning_tree<'a, V, E>(graph: &'a IdGraph<'a, V, E>) -> Option<isize>
+where
+    V: IdVertex,
+    E: IdEdge + LengthEdge,
+{
+    if graph.len_vertex() == 0 {
         return Some(0);
     }
 
     let mut map = HashMap::new();
-    for edge in edges {
-        let len = map.len();
-        map.entry(edge.from()).or_insert(len);
-        let len = map.len();
-        map.entry(edge.to()).or_insert(len);
-    }
+    graph.vertices().enumerate().for_each(|(k, v)| {
+        map.insert(v.id(), k);
+    });
 
-    let mut sorted: Vec<_> = edges.iter().collect();
+    let mut sorted: Vec<_> = graph.edges().collect();
     sorted.sort_by(|&x, &y| x.length().cmp(&y.length()));
-
     let mut ds = DisjointSet::new(map.len(), true);
-
     let mut res = 0;
 
     for edge in sorted {
@@ -44,7 +43,6 @@ pub fn minimum_spanning_tree<T: IdEdge + LengthEdge>(edges: &[&T]) -> Option<isi
 #[cfg(test)]
 mod tests {
     use super::super::DirectedGraph;
-    use super::super::Graph;
     use super::minimum_spanning_tree;
     use crate::graph::structs::{IdVertex as IdV, LengthIdEdge as LIdE};
 
@@ -55,14 +53,6 @@ mod tests {
             vec![LIdE::new(0, 1, 2), LIdE::new(0, 1, 1)],
         )
         .unwrap();
-        let edges: Vec<_> = g.edges().collect();
-        assert_eq!(Some(1), minimum_spanning_tree(&edges))
-    }
-
-    #[test]
-    fn raw() {
-        let edges = vec![LIdE::new(0, 1, 2), LIdE::new(0, 1, 1)];
-        let edges: Vec<_> = edges.iter().collect();
-        assert_eq!(Some(1), minimum_spanning_tree(&edges));
+        assert_eq!(Some(1), minimum_spanning_tree(&g))
     }
 }

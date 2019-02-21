@@ -40,7 +40,7 @@ where
     }
 }
 
-impl<'a, V, E> IdGraph<'a> for DirectedGraph<V, E>
+impl<'a, V, E> IdGraph<'a, V, E> for DirectedGraph<V, E>
 where
     V: IdVertex + 'a,
     E: IdEdge + 'a,
