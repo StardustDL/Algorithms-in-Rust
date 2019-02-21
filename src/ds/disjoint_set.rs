@@ -1,5 +1,6 @@
 /// Disjoint set
 pub struct DisjointSet {
+    capacity: usize,
     size: usize,
     parent: Vec<usize>,
     rank: Option<Vec<usize>>,
@@ -13,29 +14,60 @@ impl DisjointSet {
     /// ```
     /// let s = rsalgo::ds::DisjointSet::new(100, true);
     /// ```
-    pub fn new(size: usize, enable_rank: bool) -> Self {
+    pub fn new(capacity: usize, enable_rank: bool) -> Self {
         DisjointSet {
-            size,
-            parent: (0..size).collect(),
+            capacity,
+            size: capacity,
+            parent: (0..capacity).collect(),
             rank: if enable_rank {
-                Some(vec![0; size])
+                Some(vec![0; capacity])
             } else {
                 None
             },
         }
     }
 
-    /// Get the number of elements. This will use path compression.
+    /// Get the number of disjoint sets.
     ///
     /// # Examples
     ///
     /// ```
     /// let s = rsalgo::ds::DisjointSet::new(100, true);
     ///
-    /// assert_eq!(100, s.size());
+    /// assert_eq!(100, s.len());
     /// ```
-    pub fn size(&self) -> usize {
+    pub fn len(&self) -> usize {
         self.size
+    }
+
+    /// Get the number of elements.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let s = rsalgo::ds::DisjointSet::new(100, true);
+    ///
+    /// assert_eq!(100, s.capacity());
+    /// ```
+    pub fn capacity(&self) -> usize {
+        self.capacity
+    }
+
+    /// Returns true if the set contains no elements.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let s = rsalgo::ds::DisjointSet::new(0, true);
+    ///
+    /// assert!(s.is_empty());
+    /// ```
+    pub fn is_empty(&self) -> bool {
+        self.capacity == 0
+    }
+
+    pub fn is_one(&self) -> bool {
+        self.size == 1
     }
 
     /// Get the representation element of `id`'s set.
@@ -90,6 +122,7 @@ impl DisjointSet {
             rk[a] += if rk[a] == rk[b] { 1 } else { 0 }
         }
         self.parent[b] = a;
+        self.size -= 1;
     }
 }
 
@@ -106,6 +139,8 @@ mod tests {
 
         let mut sa = DisjointSet::new(SIZE, true);
         let mut sb = DisjointSet::new(SIZE, false);
+
+        assert_eq!(SIZE, sa.len());
 
         for _ in 0..5 {
             let a = rng.gen_range(0, SIZE);

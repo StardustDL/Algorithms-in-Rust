@@ -55,7 +55,7 @@ A collection of some algorithms and data-structures.
   - [ ] Multi source
 - [ ] Topological sorting
 - [ ] DFS order
-- [ ] Minimum spanning tree
+- [x] Minimum spanning tree
 
 ## Development
 
