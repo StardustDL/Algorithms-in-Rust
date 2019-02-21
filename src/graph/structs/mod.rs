@@ -1,4 +1,4 @@
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Debug)]
 pub struct IdVertex {
     pub id: usize,
 }
@@ -15,7 +15,7 @@ impl IdVertex {
     }
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Debug)]
 pub struct IdEdge {
     pub from: usize,
     pub to: usize,

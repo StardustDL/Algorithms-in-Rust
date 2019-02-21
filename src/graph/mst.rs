@@ -53,7 +53,8 @@ mod tests {
         let g = DirectedGraph::from(
             vec![IdV::new(0), IdV::new(1)],
             vec![LIdE::new(0, 1, 2), LIdE::new(0, 1, 1)],
-        );
+        )
+        .unwrap();
         let edges: Vec<_> = g.edges().collect();
         assert_eq!(Some(1), minimum_spanning_tree(&edges))
     }

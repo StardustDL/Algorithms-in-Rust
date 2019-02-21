@@ -1,5 +1,5 @@
-use super::{GenericRefIter, Graph, IdEdge, IdVertex};
-use std::collections::HashMap;
+use super::{GenericRefIter, Graph, IdEdge, IdGraph, IdVertex};
+use std::collections::{HashMap, VecDeque};
 
 #[derive(Default)]
 pub struct DirectedGraph<V, E>
@@ -25,22 +25,35 @@ where
         }
     }
 
-    pub fn from(vertices: Vec<V>, edges: Vec<E>) -> Self {
-        let mut v = HashMap::new();
-        let mut e = HashMap::new();
-        let es_len = edges.len();
-        for iv in vertices {
-            v.insert(iv.id(), iv);
+    pub fn from(vertices: Vec<V>, edges: Vec<E>) -> Result<Self, ()> {
+        let mut g = DirectedGraph::new();
+
+        for v in vertices {
+            g.insert_vertex(v);
         }
-        for ie in edges {
-            let te = e.entry(ie.from()).or_insert_with(Vec::new);
-            te.push(ie);
+
+        for e in edges {
+            g.insert_edge(e)?;
         }
-        DirectedGraph {
-            vertices: v,
-            edges: e,
-            edges_len: es_len,
+
+        Ok(g)
+    }
+}
+
+impl<'a, V, E> IdGraph<'a> for DirectedGraph<V, E>
+where
+    V: IdVertex + 'a,
+    E: IdEdge + 'a,
+{
+    fn out_edges_id(&'a self, vertex: usize) -> Box<GenericRefIter<'a, Self::TEdge>> {
+        match self.edges.get(&vertex) {
+            Some(te) => Box::new(te.iter()),
+            None => Box::new(std::iter::empty()),
         }
+    }
+
+    fn remove_vertex_id(&mut self, vertex: usize) -> Option<Self::TVertex> {
+        self.vertices.remove(&vertex)
     }
 }
 
@@ -69,17 +82,19 @@ where
     }
 
     fn out_edges(&'a self, vertex: &Self::TVertex) -> Box<GenericRefIter<'a, Self::TEdge>> {
-        match self.edges.get(&vertex.id()) {
-            Some(te) => Box::new(te.iter()),
-            None => Box::new(std::iter::empty()),
-        }
+        self.out_edges_id(vertex.id())
     }
 
-    fn insert_edge(&mut self, edge: Self::TEdge) {
-        let te = self.edges.entry(edge.from()).or_insert_with(Vec::new);
-        te.push(edge);
-
-        self.edges_len += 1;
+    fn insert_edge(&mut self, edge: Self::TEdge) -> Result<(), ()> {
+        let (from, to) = (edge.from(), edge.to());
+        if self.vertices.contains_key(&from) && self.vertices.contains_key(&to) {
+            let te = self.edges.entry(edge.from()).or_insert_with(Vec::new);
+            te.push(edge);
+            self.edges_len += 1;
+            Ok(())
+        } else {
+            Err(())
+        }
     }
 
     fn insert_vertex(&mut self, vertex: Self::TVertex) -> Option<Self::TVertex> {
@@ -114,8 +129,47 @@ where
     where
         Self::TEdge: PartialEq,
     {
-        self.vertices.remove(&vertex.id())
+        self.remove_vertex_id(vertex.id())
     }
+}
+
+pub fn topo_sort<V, E>(graph: &DirectedGraph<V, E>) -> Vec<usize>
+where
+    V: IdVertex,
+    E: IdEdge,
+{
+    let mut q = VecDeque::new();
+
+    let mut din = HashMap::new();
+
+    let mut res = Vec::with_capacity(graph.len_vertex());
+
+    graph.vertices().for_each(|x| {
+        din.insert(x.id(), 0);
+    });
+
+    graph
+        .edges()
+        .for_each(|x| *din.get_mut(&x.to()).unwrap() += 1);
+
+    din.iter()
+        .filter(|&(_, &v)| v == 0)
+        .for_each(|(&k, _)| q.push_back(k));
+
+    while let Some(u) = q.pop_front() {
+        res.push(u);
+        graph.out_edges_id(u).for_each(|x| {
+            let v = din.get_mut(&x.to()).unwrap();
+            if *v > 0 {
+                *v -= 1;
+                if *v == 0 {
+                    q.push_back(x.to());
+                }
+            }
+        })
+    }
+
+    res
 }
 
 #[cfg(test)]
@@ -126,7 +180,8 @@ mod tests {
 
     #[test]
     fn build() {
-        let mut g = DirectedGraph::from(vec![IdV::new(0), IdV::new(1)], vec![IdE::new(0, 1)]);
+        let mut g =
+            DirectedGraph::from(vec![IdV::new(0), IdV::new(1)], vec![IdE::new(0, 1)]).unwrap();
 
         assert_eq!(2, g.len_vertex());
         assert_eq!(1, g.len_edge());
@@ -142,11 +197,28 @@ mod tests {
 
         g.remove_edge(&IdE { from: 0, to: 1 });
         assert_eq!(0, g.len_edge());
-        g.insert_edge(IdE { from: 1, to: 0 });
+        g.insert_edge(IdE { from: 1, to: 0 }).unwrap();
         assert_eq!(1, g.len_edge());
         g.insert_vertex(IdV { id: 2 });
         assert_eq!(3, g.len_vertex());
         g.remove_vertex(&IdV { id: 1 });
         assert_eq!(2, g.len_vertex());
+    }
+
+    #[test]
+    fn topo() {
+        let g = DirectedGraph::from(
+            (0..6).map(IdV::new).collect::<Vec<_>>(),
+            vec![
+                IdE::new(0, 1),
+                IdE::new(1, 2),
+                IdE::new(2, 3),
+                IdE::new(4, 5),
+                IdE::new(3, 4),
+            ],
+        )
+        .unwrap();
+
+        assert_eq!((0..6).collect::<Vec<_>>(), super::topo_sort(&g));
     }
 }

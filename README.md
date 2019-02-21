@@ -53,7 +53,7 @@ A collection of some algorithms and data-structures.
 - [ ] Shortest path
   - [ ] Single source
   - [ ] Multi source
-- [ ] Topological sorting
+- [x] Topological sorting
 - [ ] DFS order
 - [x] Minimum spanning tree
 

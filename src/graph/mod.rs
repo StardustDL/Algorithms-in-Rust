@@ -36,7 +36,7 @@ pub trait Graph<'a> {
     fn out_edges(&'a self, vertex: &Self::TVertex) -> Box<GenericRefIter<'a, Self::TEdge>>;
 
     /// Inserts an edge into the graph.
-    fn insert_edge(&mut self, edge: Self::TEdge);
+    fn insert_edge(&mut self, edge: Self::TEdge) -> Result<(), ()>;
 
     /// Insert vertex
     /// If the graph did not have this vertex present, None is returned.
@@ -54,6 +54,12 @@ pub trait Graph<'a> {
         Self::TEdge: PartialEq;
 }
 
+pub trait IdGraph<'a>: Graph<'a> {
+    fn out_edges_id(&'a self, vertex: usize) -> Box<GenericRefIter<'a, Self::TEdge>>;
+
+    fn remove_vertex_id(&mut self, vertex: usize) -> Option<Self::TVertex>;
+}
+
 pub trait IdVertex: Vertex {
     fn id(&self) -> usize;
 }
@@ -65,4 +71,13 @@ pub trait IdEdge: Edge {
 
 pub trait LengthEdge: Edge {
     fn length(&self) -> isize;
+}
+
+pub fn get_vertices<T: IdEdge>(edges: &[&T]) -> Vec<usize> {
+    let mut set = std::collections::HashSet::new();
+    edges.iter().for_each(|&x| {
+        set.insert(x.from());
+        set.insert(x.to());
+    });
+    set.into_iter().collect()
 }
