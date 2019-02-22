@@ -6,21 +6,21 @@
 /// assert_eq!(Some(5), rsalgo::base::dichotomy(0, 10, |val| val >= 5));
 /// ```
 pub fn dichotomy<TC: Fn(isize) -> bool>(
-    lower_bound: isize,
-    upper_bound: isize,
+    lower: isize,
+    upper: isize,
     checker: TC,
 ) -> Option<isize> {
-    let mut l = lower_bound;
-    let mut r = upper_bound;
+    let mut lower = lower;
+    let mut upper = upper;
     let mut ans = None;
 
-    while l < r {
-        let mid = (l + r) / 2;
+    while lower < upper {
+        let mid = (lower + upper) / 2;
         if checker(mid) {
             ans = Some(mid);
-            r = mid;
+            upper = mid;
         } else {
-            l = mid + 1;
+            lower = mid + 1;
         }
     }
 

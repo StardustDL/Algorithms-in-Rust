@@ -27,21 +27,25 @@ A collection of some algorithms and data-structures.
 - [x] Next subset
 - [x] Quick pow, quick multiply
 - [ ] Matrix
+- [x] Prime factor decompose
 - [ ] Prime test
-  - [x] Trial `O(sqrt)`
+  - [x] Trial O(sqrt)
+  - [ ] Miller-Rabin
 - [x] GCD, LCM
   - [x] Euclid's algorithm
   - [x] Stein's algorithm
-- [ ] Inverse element (Modal meaning)
+  - [x] Extended Euclid's algorithm
+- [x] Inverse element (Modal meaning)
+- [x] Euler phi function
 - [ ] Linear sieve
-- [ ] Trichotomy
+- [x] Trichotomy
 - [ ] Tree diameter
 
 ## Data-structures
 
 - [x] Disjoint set
 - [x] Monotonic queue
-- [ ] Sparse Table
+- [x] Sparse Table
 - [ ] Prefix sum
   - [x] 1D
   - [ ] 2D

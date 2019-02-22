@@ -32,7 +32,7 @@ impl<'a, T: Ord> SparseTable<'a, T> {
         if len.is_power_of_two() {
             self.inner[range.start][len.trailing_zeros() as usize]
         } else {
-            let k = (len >> 1).next_power_of_two().trailing_zeros() as usize;
+            let k = ((len as f64).log2().floor()) as usize; // Error
             std::cmp::min(
                 self.inner[range.start][k],
                 self.inner[range.end - (1 << k)][k],
@@ -56,16 +56,16 @@ mod tests {
 
     #[test]
     fn st() {
-        const LEN: usize = 100;
+        const LEN: usize = 50;
         let mut rng = rand::thread_rng();
         let mut ori = [0; LEN];
         rng.fill(&mut ori[..]);
         let st = SparseTable::new(&ori[..]);
 
-        for _ in 0..LEN {
+        for _ in 0..1000 {
             let l = rng.gen_range(0, LEN / 2);
             let r = rng.gen_range(LEN / 2, LEN);
-
+            dbg!((l, r));
             assert_eq!(ori[l..r].iter().min().unwrap(), st.min(l..r));
         }
     }

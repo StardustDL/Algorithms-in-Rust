@@ -1,6 +1,6 @@
 use super::Uint;
 
-/// Test if `value` is prime by trial division `O(sqrt(value))`.
+/// Test if `value` is prime by trial division O(sqrt(value)).
 ///
 /// # Examples
 ///

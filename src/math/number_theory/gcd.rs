@@ -1,4 +1,4 @@
-use super::Uint;
+use super::{Int, Uint};
 
 /// Get the greatest common divisor between `a` and `b` by Enclid Algorithm
 ///
@@ -57,48 +57,14 @@ pub fn lcm(a: Uint, b: Uint) -> Uint {
     a / gcd(a, b) * b
 }
 
-/// Get the value of `base^exp % modulo`
-///
-/// # Examples
-///
-/// ```
-/// assert_eq!(25, rsalgo::math::number_theory::quick_pow(5, 7, 100));
-/// ```
-pub fn quick_pow(base: Uint, exp: Uint, modulo: Uint) -> Uint {
-    let mut ans = 1;
-    let (mut base, mut exp) = (base % modulo, exp);
-    while exp > 0 {
-        if exp % 2 != 0 {
-            ans *= base;
-            ans %= modulo;
-        }
-        base *= base;
-        base %= modulo;
-        exp /= 2;
+// return (x,y,d) ax+by=d=gcd(a,b)
+pub fn exgcd(a: Uint, b: Uint) -> (Int, Int, Uint) {
+    if b == 0 {
+        (1, 0, a)
+    } else {
+        let (x, y, d) = exgcd(b, a % b);
+        (y, x - ((a / b) as Int) * y, d)
     }
-    ans
-}
-
-/// Get the value of `base*exp % modulo`
-///
-/// # Examples
-///
-/// ```
-/// assert_eq!(5, rsalgo::math::number_theory::quick_multiply(5, 7, 10));
-/// ```
-pub fn quick_multiply(a: Uint, b: Uint, modulo: Uint) -> Uint {
-    let mut ans = 0;
-    let (mut a, mut b) = (a % modulo, b % modulo);
-    while b > 0 {
-        if b % 2 != 0 {
-            ans += a;
-            ans %= modulo;
-        }
-        a += a;
-        a %= modulo;
-        b /= 2;
-    }
-    ans
 }
 
 #[cfg(test)]
@@ -122,26 +88,5 @@ mod tests {
         assert_eq!(72, super::lcm(24, 36));
         assert_eq!(245, super::lcm(35, 49));
         assert_eq!(0, super::lcm(5, 0));
-    }
-
-    #[test]
-    fn quick_pow_multiply_test() {
-        let mut rng = rand::thread_rng();
-
-        for _ in 0..5 {
-            let a = rng.gen_range(0, 1000);
-            let b = rng.gen_range(0, 1000);
-            let md = rng.gen_range(1, 1000);
-
-            assert_eq!(a * b % md, super::quick_multiply(a, b, md));
-
-            let mut rpow = 1;
-            for _ in 0..b {
-                rpow *= a;
-                rpow %= md;
-            }
-
-            assert_eq!(rpow, super::quick_pow(a, b, md));
-        }
     }
 }
