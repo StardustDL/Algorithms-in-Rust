@@ -69,8 +69,6 @@ pub fn exgcd(a: Uint, b: Uint) -> (Int, Int, Uint) {
 
 #[cfg(test)]
 mod tests {
-    use rand::Rng;
-
     #[test]
     fn gcd() {
         assert_eq!(3, super::gcd_euclid(3, 6));

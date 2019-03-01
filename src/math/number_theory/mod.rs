@@ -12,6 +12,8 @@ pub use prime::*;
 mod function;
 pub use function::*;
 
+pub mod solve;
+
 /// Get the value of `base^exp % modulus`
 ///
 /// # Examples

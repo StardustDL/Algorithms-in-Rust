@@ -25,18 +25,19 @@ A collection of some algorithms and data-structures.
   - [x] Equal range
 - [x] Inversion pairs
 - [x] Next subset
-- [x] Quick pow, quick multiply
 - [ ] Matrix
-- [x] Prime factor decompose
-- [ ] Prime test
-  - [x] Trial O(sqrt)
-  - [ ] Miller-Rabin
-- [x] GCD, LCM
-  - [x] Euclid's algorithm
-  - [x] Stein's algorithm
-  - [x] Extended Euclid's algorithm
-- [x] Inverse element (Modal meaning)
-- [x] Euler phi function
+- [ ] Number theory
+  - [x] Quick pow, quick multiply
+  - [x] Prime factor decompose
+  - [x] Prime test
+    - [x] Trial O(sqrt)
+    - [x] Miller-Rabin
+  - [x] GCD, LCM
+    - [x] Euclid's algorithm
+    - [x] Stein's algorithm
+    - [x] Extended Euclid's algorithm
+  - [x] Inverse element (Modal meaning)
+  - [x] Euler phi function
 - [ ] Linear sieve
 - [x] Trichotomy
 - [ ] Tree diameter

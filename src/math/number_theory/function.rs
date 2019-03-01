@@ -49,10 +49,36 @@ pub fn modulo(value: Int, modulus: Uint) -> Uint {
 }
 
 pub fn inverse(value: Uint, modulus: Uint) -> Option<Uint> {
-    let (x, y, d) = super::exgcd(value, modulus);
+    let (x, _, d) = super::exgcd(value, modulus);
     if d == 1 {
         Some(modulo(x, modulus))
     } else {
         None
     }
+}
+
+// log_base(value) baby_step_giant_step
+pub fn log(base: Uint, value: Uint, modulus: Uint) -> Option<Uint> {
+    use std::collections::HashMap;
+    let mut map = HashMap::new();
+    let m = (modulus as f64).sqrt().ceil() as Uint;
+    let mut e = 1;
+    map.insert(e, 0);
+    for i in 1..m {
+        e = e * base % modulus;
+        map.entry(e).or_insert(i);
+    }
+    let v = match inverse(super::quick_pow(base, m, modulus), modulus) {
+        Some(x) => x,
+        None => return None,
+    };
+    let mut vt = value;
+    for i in 0..m {
+        match map.entry(vt) {
+            std::collections::hash_map::Entry::Occupied(oc) => return Some((i * m) + *oc.get()),
+            std::collections::hash_map::Entry::Vacant(_) => (),
+        }
+        vt = vt * v % modulus;
+    }
+    None
 }

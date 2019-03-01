@@ -22,6 +22,39 @@ pub fn is_prime_trial(value: Uint) -> bool {
     (2..=sqrt).all(|x| value % x != 0)
 }
 
+// Miller rabin
+pub fn is_prime(value: Uint) -> bool {
+    fn witness(a: Uint, u: Uint, t: Uint, value: Uint) -> bool {
+        let mut x0 = super::quick_pow(a, u, value);
+        for _ in 0..t {
+            let x1 = (x0 * x0) % value;
+            if x1 == 1 && x0 != 1 && x0 != (value - 1) {
+                return true;
+            }
+            x0 = x1;
+        }
+        x0 != 1
+    }
+
+    if value == 0 || value == 1 {
+        panic!("0 and 1 are not accepted.");
+    }
+
+    use rand::Rng;
+    const TEST: usize = 32;
+
+    let mut rng = rand::thread_rng();
+    let t = (value - 1).trailing_zeros() as Uint;
+    let u = (value - 1) >> t;
+    for _ in 0..TEST {
+        let a = rng.gen_range(1, value);
+        if witness(a, u, t, value) {
+            return false;
+        }
+    }
+    true
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
